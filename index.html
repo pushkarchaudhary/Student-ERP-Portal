@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student ERP</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f7fa;
+  }
+
+  /* Login Page */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .login-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 320px;
+    text-align: center;
+  }
+  .login-box h2 {
+    margin-bottom: 1.5rem;
+    color: #1976d2;
+  }
+  .login-box input {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  .login-box button {
+    background: #1976d2;
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  .login-box button:hover {
+    background: #125aa0;
+  }
+  #error-msg {
+    color: red;
+    display: none;
+    margin-top: 10px;
+  }
+
+  /* ERP Layout */
+  header {
+    background: #1976d2;
+    color: white;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  main {
+    display: flex;
+    min-height: 90vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 250px;
+    background: #fff;
+    padding: 1rem;
+    border-right: 1px solid #ddd;
+  }
+  .sidebar .profile {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .sidebar .profile img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px solid #1976d2;
+  }
+  .sidebar .profile h3 {
+    margin: 0.5rem 0 0;
+  }
+  .sidebar h4 {
+    margin-top: 1rem;
+    color: #1976d2;
+  }
+  .sidebar input {
+    width: 100%;
+    margin: 0.3rem 0;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  .sidebar button {
+    width: 100%;
+    background: #1976d2;
+    color: white;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
+  .sidebar button:hover {
+    background: #125aa0;
+  }
+  .logout-btn {
+    background: #e53935;
+    color: white;
+    font-weight: bold;
+    margin-top: 1rem;
+    border-radius: 8px;
+  }
+  .logout-btn:hover {
+    background: #c62828;
+  }
+
+  /* Content */
+  .content {
+    flex: 1;
+    padding: 2rem;
+    background: #fafafa;
+  }
+
+  /* Dashboard Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+  .card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    background: #e3f2fd;
+  }
+
+  /* Back Button */
+  .back-btn {
+    background: #ff9800;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+  .back-btn:hover {
+    background: #e68900;
+  }
+
+  footer {
+    background: #1976d2;
+    color: white;
+    text-align: center;
+    padding: 0.75rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  table, th, td {
+    border: 1px solid #ddd;
+  }
+  th, td {
+    padding: 0.75rem;
+    text-align: center;
+  }
+
+  /* Link Styling */
+  a {
+    text-decoration: none;
+    color: #1976d2;
+    font-weight: bold;
+  }
+  a:hover {
+    text-decoration: underline;
+    color: #125aa0;
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div class="login-container" id="login-page">
+  <div class="login-box">
+    <h2>Login to Student ERP</h2>
+    <input type="text" id="username" placeholder="Username" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button onclick="login()">Login</button>
+    <p id="error-msg">Invalid username or password!</p>
+  </div>
+</div>
+
+<!-- ERP PAGE -->
+<div id="erp-page" style="display:none;">
+  <header>
+    <h1>Student ERP</h1>
+  </header>
+
+  <main>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="profile">
+        <img src="photo.png" alt="Pushkar Chaudhary" />
+        <h3>Pushkar Chaudhary</h3>
+        <small>0231csiot114@niet.co.in</small>
+      </div>
+      <h4>Password Reset</h4>
+      <input type="password" placeholder="New Password" />
+      <input type="password" placeholder="Confirm Password" />
+      <button>Reset Password</button>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </aside>
+
+    <!-- Content -->
+    <section class="content" id="content-area"></section>
+  </main>
+
+  <footer>&copy; Student ERP</footer>
+</div>
+
+<script>
+  const validUser = "pushkar";
+  const validPass = "12345";
+
+  function login() {
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+    if (user === validUser && pass === validPass) {
+      document.getElementById("login-page").style.display = "none";
+      document.getElementById("erp-page").style.display = "block";
+      loadDashboard();
+    } else {
+      document.getElementById("error-msg").style.display = "block";
+    }
+  }
+
+  function logout() {
+    document.getElementById("erp-page").style.display = "none";
+    document.getElementById("login-page").style.display = "flex";
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+  }
+
+  // Load saved marks
+  let marks = JSON.parse(localStorage.getItem('internalMarks')) || {
+    DSA: 0,
+    "Computer Networks": 0,
+    "Operating Systems": 0
+  };
+
+  function saveMarks() {
+    const dsa = parseInt(document.getElementById("marks-dsa").value) || 0;
+    const cn = parseInt(document.getElementById("marks-cn").value) || 0;
+    const os = parseInt(document.getElementById("marks-os").value) || 0;
+    marks = { DSA: dsa, "Computer Networks": cn, "Operating Systems": os };
+    localStorage.setItem('internalMarks', JSON.stringify(marks));
+    alert("Marks saved successfully!");
+    openModule('internalMarks');
+  }
+
+  const modules = {
+    dashboard: `
+      <h2>Dashboard</h2>
+      <div class="grid">
+        <div class="card" onclick="openModule('attendance')">Attendance</div>
+        <div class="card" onclick="openModule('internalMarks')">Internal Marks</div>
+        <div class="card" onclick="openModule('exams')">Exam Schedule</div>
+        <div class="card" onclick="openModule('fees')">Fees</div>
+        <div class="card" onclick="openModule('announcements')">Announcements</div>
+        <div class="card" onclick="openModule('assignment')">Assignments</div>
+        <div class="card" onclick="openModule('syllabus')">Syllabus</div>
+        <div class="card" onclick="openModule('library')">Library</div>
+        <div class="card" onclick="openModule('placement')">Placement</div>
+        <div class="card" onclick="openModule('leave')">Leave Application</div>
+        <div class="card" onclick="openModule('feedback')">Lecture Feedback</div>
+        <div class="card" onclick="openModule('events')">Events</div>
+        <div class="card" onclick="openModule('holidays')">Holidays</div>
+      </div>
+    `,
+    internalMarks: `
+      <h2>Internal Marks (Out of 30)</h2>
+      <table>
+        <tr><th>Subject</th><th>Marks</th></tr>
+        <tr><td>DSA</td><td><input id="marks-dsa" type="number" min="0" max="30" value="${marks.DSA}"></td></tr>
+        <tr><td>Computer Networks</td><td><input id="marks-cn" type="number" min="0" max="30" value="${marks["Computer Networks"]}"></td></tr>
+        <tr><td>Operating Systems</td><td><input id="marks-os" type="number" min="0" max="30" value="${marks["Operating Systems"]}"></td></tr>
+      </table>
+      <button onclick="saveMarks()">Save Marks</button>
+    `,
+    attendance: `
+      <h2>Attendance</h2>
+      <table>
+        <tr><th>Subject</th><th>Present</th><th>Absent</th><th>Attendance %</th></tr>
+        <tr><td>DSA</td><td>23</td><td>2</td><td>92%</td></tr>
+        <tr><td>Computer Networks</td><td>20</td><td>5</td><td>80%</td></tr>
+        <tr><td>Operating Systems</td><td>22</td><td>3</td><td>88%</td></tr>
+      </table>
+    `,
+    exams: "<h2>Exam Schedule</h2><ul><li>DSA Midterm: 15 Sept 2025</li><li>CN Midterm: 20 Sept 2025</li><li>OS Midterm: 25 Sept 2025</li></ul>",
+    fees: "<h2>Fees</h2><p>Total Fees: ₹1,20,000<br>Paid: ₹80,000<br>Pending: ₹40,000</p>",
+    announcements: "<h2>Announcements</h2><ul><li>Hackathon on 10 Sept</li><li>Guest Lecture on AI: 12 Sept</li></ul>",
+    assignment: `
+      <h2>Assignments</h2>
+      <ul>
+        <li>DSA Assignment - <a href="assignments/dsa-assignment.pdf" target="_blank">📄 Download PDF</a> (Due: 5 Sept)</li>
+        <li>Computer Networks Assignment - <a href="assignments/cn-assignment.pdf" target="_blank">📄 Download PDF</a> (Due: 8 Sept)</li>
+        <li>Operating System Assignment - <a href="assignments/os-assignment.pdf" target="_blank">📄 Download PDF</a> (Due: 10 Sept)</li>
+      </ul>
+    `,
+    syllabus: `
+      <h2>Syllabus</h2>
+      <p>Download your complete syllabus below:</p>
+      <a href="syllabus.pdf" target="_blank">📄 View Syllabus PDF</a>
+    `,
+    library: "<h2>Library</h2><ul><li>Python Book - Available</li><li>C++ Book - Available</li></ul>",
+    placement: "<h2>Placement</h2><p>Upcoming Companies: Infosys (Sept 18), TCS (Sept 22)</p>",
+    leave: `
+      <h2>Leave Application</h2>
+      <form>
+        <label>Reason:</label><br>
+        <input type="text" required><br>
+        <label>Date:</label><br>
+        <input type="date" required><br>
+        <button type="submit">Submit</button>
+      </form>
+    `,
+    feedback: `
+      <h2>Lecture Feedback</h2>
+      <form>
+        <label>Subject:</label><br>
+        <select><option>DSA</option><option>CN</option><option>OS</option></select><br>
+        <label>Feedback:</label><br>
+        <textarea rows="4" cols="30"></textarea><br>
+        <button type="submit">Submit</button>
+      </form>
+    `,
+    events: "<h2>Events</h2><p>Independence Day Celebration - 15 Aug<br>Freshers Party - 30 Aug</p>",
+    holidays: "<h2>Holidays</h2><ul><li>15 Aug - Independence Day</li><li>2 Oct - Gandhi Jayanti</li><li>25 Dec - Christmas</li></ul>",
+  };
+
+  function loadDashboard() {
+    document.getElementById("content-area").innerHTML = modules.dashboard;
+  }
+
+  function openModule(module) {
+    const backButton = `<button class="back-btn" onclick="loadDashboard()">← Back to Dashboard</button>`;
+    document.getElementById("content-area").innerHTML = backButton + modules[module];
+  }
+</script>
+
+</body>
+</html>
+
+
+
